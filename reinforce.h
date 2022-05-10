@@ -1,5 +1,5 @@
-#ifndef UNTITLED7_REINFORCE_H
-#define UNTITLED7_REINFORCE_H
+#ifndef rl_debugging_REINFORCE_H
+#define rl_debugging_REINFORCE_H
 #include "algorithm.h"
 
 class reinforce : public algorithm {
@@ -35,4 +35,4 @@ public:
         optimizer_policy->step();
     }
 };
-#endif // UNTITLED7_REINFORCE_H
+#endif // rl_debugging_REINFORCE_H

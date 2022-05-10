@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
-project(untitled7)
+project(rl_debugging)
 set(CMAKE_PREFIX_PATH "/home/pakos/libtorch/share/cmake/Torch")
 # we ask for Magnum because we want to build the graphics
 find_package(RobotDART REQUIRED OPTIONAL_COMPONENTS Magnum)

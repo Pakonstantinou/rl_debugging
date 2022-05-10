@@ -1,5 +1,5 @@
-#ifndef UNTITLED7_ENVIRONMENT_H
-#define UNTITLED7_ENVIRONMENT_H
+#ifndef rl_debugging_ENVIRONMENT_H
+#define rl_debugging_ENVIRONMENT_H
 
 #include <cmath>
 #include <fstream>
@@ -18,4 +18,4 @@ public:
     virtual std::tuple<torch::Tensor, double, bool, bool> step(torch::Tensor move) = 0;
 };
 
-#endif // UNTITLED7_ENVIRONMENT_H
+#endif // rl_debugging_ENVIRONMENT_H

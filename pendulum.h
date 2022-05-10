@@ -1,5 +1,5 @@
-#ifndef UNTITLED7_PENDULUM_H
-#define UNTITLED7_PENDULUM_H
+#ifndef rl_debugging_PENDULUM_H
+#define rl_debugging_PENDULUM_H
 
 #include "environment.h"
 
@@ -118,4 +118,4 @@ public:
     }
 };
 
-#endif // UNTITLED7_PENDULUM_H
+#endif // rl_debugging_PENDULUM_H

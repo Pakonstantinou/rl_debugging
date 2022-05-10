@@ -1,5 +1,5 @@
-#ifndef UNTITLED7_ALGORITHM_H
-#define UNTITLED7_ALGORITHM_H
+#ifndef rl_debugging_ALGORITHM_H
+#define rl_debugging_ALGORITHM_H
 #include "critic_network.h"
 #include "environment.h"
 #include "pendulum.h"

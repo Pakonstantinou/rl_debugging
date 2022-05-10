@@ -1,5 +1,5 @@
-#ifndef UNTITLED7_ACTOR_CRITIC_H
-#define UNTITLED7_ACTOR_CRITIC_H
+#ifndef rl_debugging_ACTOR_CRITIC_H
+#define rl_debugging_ACTOR_CRITIC_H
 #include "algorithm.h"
 
 class ac : public algorithm {
@@ -63,4 +63,4 @@ public:
         optimizer_critic->step();
     }
 };
-#endif // UNTITLED7_ACTOR_CRITIC_H
+#endif // rl_debugging_ACTOR_CRITIC_H

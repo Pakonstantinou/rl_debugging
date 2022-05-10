@@ -1,5 +1,5 @@
-#ifndef UNTITLED7_DPG_H
-#define UNTITLED7_DPG_H
+#ifndef rl_debugging_DPG_H
+#define rl_debugging_DPG_H
 #include "algorithm.h"
 
  class dpg : public algorithm{
@@ -69,4 +69,4 @@
         optimizer_critic->step();
     }
 };
-#endif //UNTITLED7_DPG_H
+#endif //rl_debugging_DPG_H

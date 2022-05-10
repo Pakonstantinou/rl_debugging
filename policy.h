@@ -1,5 +1,5 @@
-#ifndef UNTITLED7_POLICY_H
-#define UNTITLED7_POLICY_H
+#ifndef rl_debugging_POLICY_H
+#define rl_debugging_POLICY_H
 #include <torch/torch.h>
 
 class policygeneral : public torch::nn::Module {
@@ -41,4 +41,4 @@ public:
     }
 };
 
-#endif // UNTITLED7_POLICY_H
+#endif // rl_debugging_POLICY_H
