@@ -72,7 +72,7 @@ int main()
     pol2->to(torch::kDouble);
 
     //---UNCOMENT THE ALGORITHM YOU WANT TO RUN---//
-    algorithm* algo = new ac(pol, cr, env, 1e-4, 1e-3);
+    algorithm* algo = new dpg(pol, cr, env, 1e-4, 1e-3);
     // algorithm* algo = new dpg(pol2, cr, env, 2e-4, 1e-3);
     // algorithm* algo = new reinforce(pol, cr, env, 2e-4, 1e-3);
 

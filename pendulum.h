@@ -16,9 +16,9 @@ class pendulum : public environment {
 
 public:
     torch::Tensor _state;
-    // bool done;
-    // double reward;
-    int simusteps = 0;
+    //bool done;
+    //double reward;
+    int simusteps=0;
     std::shared_ptr<robot_dart::Robot> robot = std::make_shared<robot_dart::Robot>("pendulum.urdf");
     std::shared_ptr<robot_dart::RobotDARTSimu> simu = std::make_shared<robot_dart::RobotDARTSimu>(0.001);
 
@@ -26,21 +26,21 @@ public:
     {
         robot->fix_to_world();
         robot->set_position_enforced(true);
+        robot->set_positions(robot_dart::make_vector({M_PI}));
         robot->set_actuator_types("torque");
         simu->add_robot(robot);
 #ifdef GRAPHIC
         auto graphics = std::make_shared<robot_dart::gui::magnum::Graphics>();
-        simu->set_graphics(graphics);
+            simu->set_graphics(graphics);
 #endif
         //_state = torch::tensor({M_PI}, torch::kDouble);
-
-        reset();
     }
 
-    std::tuple<torch::Tensor, double, bool, bool> step(torch::Tensor act) override
+    std::tuple<torch::Tensor, double, bool, bool> step(torch::Tensor act)
     {
-        bool success = false;
-        double move = act.item<double>();
+        bool success;
+        auto act_a = act.accessor<double, 1>();
+        double move = act_a[0];
 
         auto cmds = rd::make_vector({move});
 
@@ -51,70 +51,67 @@ public:
         }
 
         double temp_pos = robot->positions()[0];
-        // double data[] = {temp_pos};
-        double sin_pos = std::sin(temp_pos);
-        double cos_pos = std::cos(temp_pos);
+        //double data[] = {temp_pos};
+        double sin_pos=sin(robot->positions()[0]);
+        double cos_pos=cos(robot->positions()[0]);
         bool done = false;
         double reward;
         double temp_velocity = robot->velocities()[0];
-        double theta = angle_dist(temp_pos, 0.);
-        // reward=-(std::abs(M_PI-robot->positions()[0]));
-        reward = -theta;
-        // reward = -0.01 * move;
-        // reward = -std::abs(temp_velocity);
+        double theta = angle_dist(temp_pos, M_PI);
+        //reward=-(std::abs(M_PI-robot->positions()[0]));
+        reward = theta;
+        //reward = -std::abs(temp_velocity);
 
-        // if (std::abs(M_PI-temp_pos)<0.0001) {
-        if (theta < 0.1) {
-            // if ((std::abs(theta)<0.1)){
+        //if (std::abs(M_PI-temp_pos)<0.0001) {
+        if ((std::abs(M_PI-theta)<0.1)){
+            //if ((std::abs(theta)<0.1)){
 
-            // auto cmds = rd::make_vector({0});
-            // robot->set_commands(cmds);
+            //auto cmds = rd::make_vector({0});
+            //robot->set_commands(cmds);
             done = false;
             reward = 10;
-            // simusteps = 0;
-            // std::cout << "success" << std::endl;
-            success = true;
-            // std::cout<<temp_pos<<std::endl;
+            //simusteps = 0;
+            //std::cout << "success"<<std::endl;
+            success=true;
+            //std::cout<<temp_pos<<std::endl;
 
-            // torch::Tensor reset();
+            //torch::Tensor reset();
         }
         if (simusteps == 5000) {
-            // auto cmds = rd::make_vector({0});
-            // robot->set_commands(cmds);
+            //auto cmds = rd::make_vector({0});
+            //robot->set_commands(cmds);
             done = true;
             simusteps = 0;
-            // std::cout << "fail" << std::endl;
-            success = false;
-            // std::cout << temp_pos << std::endl;
-            // torch::Tensor reset();
+            std::cout << "fail"<<std::endl;
+            success=false;
+            std::cout<<angle_dist(0,temp_pos)<<std::endl;
+            //torch::Tensor reset();
         }
 
         //_state = torch::from_blob(data, {1}, torch::TensorOptions().dtype(torch::kDouble));
-        _state = torch::tensor({sin_pos, cos_pos, temp_velocity}, torch::kDouble);
+        _state = torch::tensor({sin_pos,cos_pos,temp_velocity}, torch::kDouble);
 
         return {_state, reward, done, success};
     }
 
-    torch::Tensor reset() override
+    torch::Tensor reset()
     {
         simusteps = 0;
         robot->reset();
-        robot->set_positions(robot_dart::make_vector({0}));
-        double temp_pos = robot->positions()[0];
-        double sin_pos = std::sin(temp_pos);
-        double cos_pos = std::cos(temp_pos);
-        _state = torch::tensor({sin_pos, cos_pos, 0.0}, torch::kDouble);
+        robot->set_positions(robot_dart::make_vector({M_PI}));
+        //double tempor =robot->positions()[0];
+        _state = torch::tensor({0.0,-1.0,0.0}, torch::kDouble);
         return _state;
     }
 
-    double angle_dist(double a, double b)
+    static double angle_dist(double a, double b)
     {
         double theta = b - a;
         while (theta < -M_PI)
             theta += 2 * M_PI;
         while (theta > M_PI)
             theta -= 2 * M_PI;
-        return std::abs(theta);
+        return abs(theta);
     }
 };
 
