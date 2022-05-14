@@ -2,7 +2,7 @@
 #include "dpg.h"
 #include "reinforce.h"
 
-class MyPolicy : public stochastic {
+struct MyPolicy : public stochastic {
 public:
     torch::nn::Linear fc1, out, out_logsigma;
 
@@ -20,7 +20,7 @@ public:
     }
 };
 
-class MyPolicy2 : public deterministic {
+struct MyPolicy2 : public deterministic {
 public:
     torch::nn::Linear fc1, out, out_logsigma;
 
@@ -38,7 +38,7 @@ public:
     }
 };
 
-class MyCritic : public criticgeneral {
+struct MyCritic : public criticgeneral {
 public:
     torch::nn::Linear fc1, out;
 
