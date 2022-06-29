@@ -21,7 +21,11 @@ public:
 
         std::tie(mu, logsigma) = forward(state); ///
         auto sample = torch::randn({1}, torch::kDouble) * torch::exp(logsigma) + mu;
-        torch::Tensor action = sample.to(torch::kDouble);
+
+        torch::Tensor action = (torch::tanh(sample).to(torch::kDouble))*10.0; ////////////////TESTING
+
+        //torch::Tensor action = sample.to(torch::kDouble);
+
         return action;
     }
 };

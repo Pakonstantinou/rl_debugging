@@ -84,12 +84,21 @@ public:
             simusteps = 0;
             std::cout << "fail"<<std::endl;
             success=false;
-            std::cout<<angle_dist(0,temp_pos)<<std::endl;
+            std::cout<<theta<<std::endl;
             //torch::Tensor reset();
         }
 
         //_state = torch::from_blob(data, {1}, torch::TensorOptions().dtype(torch::kDouble));
-        _state = torch::tensor({sin_pos,cos_pos,temp_velocity}, torch::kDouble);
+        _state = torch::tensor({sin_pos, cos_pos}, torch::kDouble);
+
+        auto _stateNan = at::isnan(_state).any().item<bool>();
+
+        if (_stateNan==1){
+            std::cout<<"_statesNan"<<_state<<std::endl;
+            std::cout<<"mu nan"<<std::endl;
+
+            exit (EXIT_FAILURE);
+        }
 
         return {_state, reward, done, success};
     }
@@ -98,9 +107,10 @@ public:
     {
         simusteps = 0;
         robot->reset();
-        robot->set_positions(robot_dart::make_vector({M_PI}));
+        auto startingpoint = robot_dart::make_vector({M_PI});
+        robot->set_positions(startingpoint);
         //double tempor =robot->positions()[0];
-        _state = torch::tensor({0.0,-1.0,0.0}, torch::kDouble);
+        _state = torch::tensor({sin(M_PI), cos(M_PI)}, torch::kDouble);
         return _state;
     }
 

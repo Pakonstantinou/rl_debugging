@@ -27,7 +27,7 @@ public:
         torch::Tensor logsigma1;
         std::tie(mu1, logsigma1) = policy->forward(curr_states);
         sigma1 = torch::exp(logsigma1);
-        auto sampler1 = torch::randn({curr_states.size(0), 1}) * sigma1 + mu1;
+        auto sampler1 = torch::randn({curr_states.size(0), 1}) * sigma1 + mu1 ;
         auto pdf = (1.0 / (sigma1 * std::sqrt(2.0 * M_PI))) * torch::exp(-0.5 * torch::pow((sampler1 - mu1) / sigma1, 2));
         auto log_prob = torch::log(pdf);
 
@@ -41,13 +41,15 @@ public:
             std::tie(mu2, logsigma2) = policy->forward(next_states);
             torch::Tensor sigma2 = torch::exp(logsigma2);
 
-            auto sampler2 = torch::randn({next_states.size(0), 1}) * sigma2 + mu2;
+            auto sampler2 = torch::randn({next_states.size(0), 1}) * sigma2 + mu2 ;
             torch::Tensor next_actions = sampler2; // to(torch::kDouble)
             next_actions = torch::squeeze(next_actions, 1);
 
             torch::Tensor next_values = critic->forward(next_states, next_actions);
 
             q_target = rewards.detach().view({-1, 1}) + dones.view({-1, 1}) * gamma * next_values - current_values;
+
+
         }
 
         torch::Tensor policy_loss_ = -torch::mean(current_values.detach() * log_prob);
