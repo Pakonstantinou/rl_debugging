@@ -105,20 +105,23 @@ int main()
     pol2->to(torch::kDouble);
 
     //---UNCOMENT THE ALGORITHM YOU WANT TO RUN---//
-    algorithm* algo = new ac (pol, cr, env, 0.0005, 0.001);
+    algorithm* algo = new ac (pol, cr, env, 0.00001, 0.0001);
      //algorithm* algo = new dpg(pol2, cr, env, 2e-4, 1e-3);
-    // algorithm* algo = new reinforce(pol, cr, env, 2e-4, 1e-3);
+     //algorithm* algo = new reinforce(pol, cr, env, 1e-11, 0);
 
     for (int episode = 0; episode < 1000000; episode++) {
-        std::cout << "episode: " << episode << std::endl;
+        //std::cout << "episode: " << episode << std::endl;
         algo->run_episode();
         algo->preprocess_states(algo->states);
         algo->step();
         //std::cout <<algo->states<<std::endl;
         //std::cout <<torch::cat({algo->actions.unsqueeze(1), algo->rewards.unsqueeze(1)}, 1)<< std::endl;
         //std::cout << "NORM: " << torch::nn::utils::parameters_to_vector(pol->parameters()).norm().item<double>() << std::endl;
-        std::cout << "sum of rewards: " << algo->sum_of_rewards << std::endl;
-        // std::cout<<"returns: "<<algo->returns<<std::endl;
+
+        //if (episode%50==0) {
+            std::cout << /*"sum of rewards: " <<*/ algo->sum_of_rewards << std::endl;
+            // std::cout<<"returns: "<<algo->returns<<std::endl;
+        //}
     }
 
     return 0;

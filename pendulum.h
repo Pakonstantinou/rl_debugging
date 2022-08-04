@@ -1,5 +1,5 @@
-#ifndef rl_debugging_PENDULUM_H
-#define rl_debugging_PENDULUM_H
+#ifndef FRAMEWORK_PENDULUM_H
+#define FRAMEWORK_PENDULUM_H
 
 #include "environment.h"
 
@@ -21,7 +21,8 @@ public:
     int simusteps=0;
     std::shared_ptr<robot_dart::Robot> robot = std::make_shared<robot_dart::Robot>("pendulum.urdf");
     std::shared_ptr<robot_dart::RobotDARTSimu> simu = std::make_shared<robot_dart::RobotDARTSimu>(0.001);
-
+    int action_space=1;
+    int state_space=2;
     pendulum()
     {
         robot->fix_to_world();
@@ -57,13 +58,14 @@ public:
         bool done = false;
         double reward;
         double temp_velocity = robot->velocities()[0];
-        double theta = angle_dist(temp_pos, M_PI);
-        //reward=-(std::abs(M_PI-robot->positions()[0]));
-        reward = theta;
-        //reward = -std::abs(temp_velocity);
+        double theta = angle_dist(temp_pos, 0);
+        // reward=-(std::abs(M_PI-robot->positions()[0]));
+        reward = -theta;
+        // reward = -0.01 * move;
+        // reward = -std::abs(temp_velocity);
 
-        //if (std::abs(M_PI-temp_pos)<0.0001) {
-        if ((std::abs(M_PI-theta)<0.1)){
+        // if (std::abs(M_PI-temp_pos)<0.0001) {
+        if (abs(theta) < 0.1) {
             //if ((std::abs(theta)<0.1)){
 
             //auto cmds = rd::make_vector({0});
@@ -82,9 +84,9 @@ public:
             //robot->set_commands(cmds);
             done = true;
             simusteps = 0;
-            std::cout << "fail"<<std::endl;
+            //std::cout << "fail"<<std::endl;
             success=false;
-            std::cout<<theta<<std::endl;
+            //std::cout<<theta<<std::endl;
             //torch::Tensor reset();
         }
 
@@ -125,4 +127,4 @@ public:
     }
 };
 
-#endif // rl_debugging_PENDULUM_H
+#endif // FRAMEWORK_PENDULUM_H

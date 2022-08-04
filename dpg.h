@@ -1,5 +1,5 @@
-#ifndef rl_debugging_DPG_H
-#define rl_debugging_DPG_H
+#ifndef FRAMEWORK_DPG_H
+#define FRAMEWORK_DPG_H
 #include "algorithm.h"
 
  class dpg : public algorithm {
@@ -65,4 +65,4 @@ public:
         optimizer_critic->step();
     }
 };
-#endif //rl_debugging_DPG_H
+#endif //FRAMEWORK_DPG_H

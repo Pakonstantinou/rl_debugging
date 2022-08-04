@@ -1,5 +1,5 @@
-#ifndef rl_debugging_ALGORITHM_H
-#define rl_debugging_ALGORITHM_H
+#ifndef FRAMEWORK_ALGORITHM_H
+#define FRAMEWORK_ALGORITHM_H
 #include "critic_network.h"
 #include "environment.h"
 #include "pendulum.h"
@@ -76,6 +76,7 @@ public:
                 // use action in the environment
                 std::tie(state, reward, done, success) = env->step(action);
 
+
                 if (states.size(0) == 0)
                     states = state.unsqueeze(0);
                 else
@@ -87,9 +88,9 @@ public:
                     actions = torch::cat({actions, action});
 
                 if (rewards.size(0) == 0)
-                    rewards = torch::tensor({reward}, torch::kDouble);
+                    rewards = torch::tensor({reward});
                 else {
-                    tempreward = torch::tensor({reward}, torch::kDouble);
+                    tempreward = torch::tensor({reward});
                     rewards = torch::cat({rewards, tempreward});
                 }
 
@@ -116,7 +117,8 @@ public:
                 gt.push_back(temp_gt);
             }
 
-            returns = torch::from_blob(gt.data(), {rewards.size(0)}, torch::kDouble);
+            returns = torch::from_blob(gt.data(), {rewards.size(0)});
+            //std::cout<<gt<<std::endl<<returns<<std::endl;
         }
     }
 

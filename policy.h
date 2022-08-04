@@ -1,5 +1,5 @@
-#ifndef rl_debugging_POLICY_H
-#define rl_debugging_POLICY_H
+#ifndef FRAMEWORK_POLICY_H
+#define FRAMEWORK_POLICY_H
 #include <torch/torch.h>
 
 class policygeneral : public torch::nn::Module {
@@ -20,9 +20,9 @@ public:
         torch::Tensor logsigma;
 
         std::tie(mu, logsigma) = forward(state); ///
-        auto sample = torch::randn({1}, torch::kDouble) * torch::exp(logsigma) + mu;
+        auto sample = torch::randn({1}) * torch::exp(logsigma) + mu;
 
-        torch::Tensor action = (torch::tanh(sample).to(torch::kDouble))*10.0; ////////////////TESTING
+        torch::Tensor action = (torch::tanh(sample))*10.0; ////////////////TESTING
 
         //torch::Tensor action = sample.to(torch::kDouble);
 
@@ -40,9 +40,9 @@ public:
         torch::Tensor logsigma;
         std::tie(action, logsigma) = forward(state);
         auto noise = torch::randn({1}) * 0.2 + 0;
-        action = action + noise;
+        action = action + noise.detach();
         return action;
     }
 };
 
-#endif // rl_debugging_POLICY_H
+#endif // FRAMEWORK_POLICY_H
